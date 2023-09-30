@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements UserServicesInterface {
 
     @Autowired
     private UserRepository userRepository;
@@ -18,23 +18,28 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Override
     public User saveUser(User user) {
         return userRepository.save(user);
     }
 
+    @Override
     public void deleteUser(int id) {
         userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "Id", id));
         userRepository.deleteById(id);
     }
 
+    @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
+    @Override
     public User getUserById(int id) {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "Id", id));
     }
 
+    @Override
     public User updateUser(User user, int id) {
         User u = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
         u.setFirstName(user.getFirstName());
